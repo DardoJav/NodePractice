@@ -1,0 +1,12 @@
+<h2 class="red">Lista de Productos:</h2>
+{{#each products}}
+<hr />
+    <div>
+        <b>Titulo: </b> {{this.title}}<br>
+        <b>Descripcion: </b>{{this.description}}<br>
+        <b>Codigo: </b>{{this.code}}<br>
+        <b>Precio: </b>{{this.price}}<br>
+        <b>Cantidad: </b>{{this.stock}}<br>
+        <b>Categoria: </b>{{this.category}}<br>
+    </div>
+{{/each}}
