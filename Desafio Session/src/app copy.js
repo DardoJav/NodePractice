@@ -1,6 +1,6 @@
 import express from 'express'
 import productRouter from './routes/product.router.js'
-import cartRouter from './routes/cart.router.js'
+// import cartRouter from './routes/cart.router.js'
 import mongoose from 'mongoose'
 import handlebars from 'express-handlebars'
 
@@ -12,7 +12,7 @@ app.set('views', './src/views')
 app.set('view engine', 'handlebars')
 
 app.use('/products', productRouter)
-app.use('/carts', cartRouter)
+// app.use('/carts', cartRouter)
 
 const uri = 'mongodb+srv://coder:coder@cluster0.qgkzyz6.mongodb.net/'
 

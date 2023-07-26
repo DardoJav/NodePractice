@@ -1,0 +1,17 @@
+{
+  "name": "desafio-session",
+  "version": "1.0.0",
+  "description": "Desafio Login por formulario",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^5.0.0"
+  }
+}

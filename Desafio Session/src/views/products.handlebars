@@ -1,0 +1,39 @@
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Descripcion</th>
+                <th>Precio</th>
+                <th>Codigo</th>
+                <th>Categoria</th>
+                <th>Stock</th>
+                <th>Estado</th>
+                <th>Imagen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each docs}}
+                <tr>
+                    <td>{{this.title}}</td>
+                    <td>{{this.description}}</td>
+                    <td>{{this.price}}</td>
+                    <td>{{this.code}}</td>
+                    <td>{{this.category}}</td>
+                    <td>{{this.stock}}</td>
+                    <td>{{this.status}}</td>
+                    <td>{{this.thumbnail}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div>
+        {{#if hasPrevPage}}
+            <a href="{{prevLink}}">Anterior</a>
+        {{/if}}
+        {{#if hasNextPage}}
+            <a href="{{nextLink}}">Siguiente</a>
+        {{/if}}
+    </div>
+</div>
