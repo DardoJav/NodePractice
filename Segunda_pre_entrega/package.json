@@ -1,0 +1,20 @@
+{
+  "name": "segunda-pre-entrega",
+  "version": "1.0.0",
+  "description": "Segunda Pre Entrega del trabajo final",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "mongoose": "^7.3.2",
+    "mongoose-paginate-v2": "^1.7.1"
+  }
+}
