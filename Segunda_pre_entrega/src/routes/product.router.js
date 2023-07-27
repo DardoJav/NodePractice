@@ -83,9 +83,19 @@ router.get('/', async (req, res) => {
         result.nextLink = result.hasNextPage 
                             ? `/products/?page=${result.nextPage}&limit=${result.limit}`
                             : ''
-        console.log(result)
         res.render('products', result)
     } catch(err) {
+        res.status(500).json({ status: 'error', error: err.message })
+    }
+})
+
+router.get('/:pid', async (req, res) => {
+    try{
+        const pid = req.params.pid
+        const product = await productModel.findById(pid)
+        return res.status(200).json({status: 'success', payload: product})
+    } catch(err) {
+        console.log(err)
         res.status(500).json({ status: 'error', error: err.message })
     }
 })

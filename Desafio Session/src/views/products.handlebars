@@ -1,39 +1,69 @@
 <div>
-    <table>
-        <thead>
-            <tr>
-                <th>Titulo</th>
-                <th>Descripcion</th>
-                <th>Precio</th>
-                <th>Codigo</th>
-                <th>Categoria</th>
-                <th>Stock</th>
-                <th>Estado</th>
-                <th>Imagen</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each docs}}
-                <tr>
-                    <td>{{this.title}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.price}}</td>
-                    <td>{{this.code}}</td>
-                    <td>{{this.category}}</td>
-                    <td>{{this.stock}}</td>
-                    <td>{{this.status}}</td>
-                    <td>{{this.thumbnail}}</td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
-
-    <div>
-        {{#if hasPrevPage}}
-            <a href="{{prevLink}}">Anterior</a>
-        {{/if}}
-        {{#if hasNextPage}}
-            <a href="{{nextLink}}">Siguiente</a>
-        {{/if}}
-    </div>
+    Bienvenido {{ username }}
 </div>
+<hr />
+<h2>Products</h2>
+<hr />
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td></td>
+            <td><strong>Titulo</strong></td>
+            <td><strong>Descripcion</strong></td>
+            <td><strong>Precio</strong></td>
+            <td><strong>Codigo</strong></td>
+            <td><strong>Categoria</strong></td>
+            <td><strong>Stock</strong></td>
+            <td><strong>Estado</strong></td>
+            <td><strong>Imagen</strong></td>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each docs}}
+            <tr>
+                <td><button class="btn btn-success" onclick="addProductToCart('{{this._id}}')">AddToCart</button></td>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.category}}</td>
+                <td>{{this.stock}}</td>
+                <td>{{this.status}}</td>
+                <td>{{this.thumbnail}}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<div>
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}">Anterior</a>
+    {{/if}}
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}">Siguiente</a>
+    {{/if}}
+</div>
+
+<script>
+    addProductToCart = (pid) => {
+        fetch(`/carts`, {
+            method: 'post'
+        })
+            .then(result => result.json())
+            .then(result => {
+                if (result.status === 'error') throw new Error(result.error)
+                return result.payload._id
+            })
+            .then(cid =>
+                fetch(`/carts/${cid}/product/${pid}`,{
+                    method: 'post'
+                })
+            )
+            .then(result => result.json())
+            .then(result => {
+                if (result.status === 'error') throw new Error (result.error)
+                alert(`Se ha agregado con exito el producto al carrito con id=${result.payload._id}`)
+            })
+            .catch(err => alert (`Ocurrio un error: \n ${err}`))
+    }
+</script>
