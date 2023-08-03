@@ -38,7 +38,8 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-
+//////////////////////////////////////////////////////////////////Seguir el video 43350 - 13/07 - Autorización y autenticación desde hora 1.08.00
+//////////////////////////////////////////////////////////////////despues agregar lo de github
 //falta agregar el views y cambiar products y carts a api/..
 //falta agregar el home.handlebars
 //falta agregar la pagina de login 

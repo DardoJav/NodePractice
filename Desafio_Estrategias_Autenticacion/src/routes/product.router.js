@@ -56,7 +56,7 @@ export const getProducts = async (req, res) => {
 }
 
 
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     const product = req.body
     try {
         const result = await productModel.create(product)
@@ -67,7 +67,7 @@ router.post('/', auth, async (req, res) => {
 })
 
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let page = parseInt(req.query.page) || 1
         let limit = parseInt(req.query.limit) || 10
@@ -85,7 +85,8 @@ router.get('/', auth, async (req, res) => {
         result.nextLink = result.hasNextPage 
                             ? `/products/?page=${result.nextPage}&limit=${result.limit}`
                             : ''
-        result.username = req.session.user.username
+        result.user = req.session.user
+        // console.log(result)
         res.render('products', result)
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })

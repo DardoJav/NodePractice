@@ -45,10 +45,11 @@ router.post('/', auth, async (req, res) => {
 //     return res.status(result.statusCode).json(result.response)
 // })
 
-router.get('/:cid', auth, async (req, res) => {
+router.get('/:cid', async (req, res) => {
     const result = await getProductsFromCart(req, res)
+    result.user = req.session.user
     if(result.statusCode === 200) {
-        res.render('productsFromCart', {cart: result.response.payload})
+        res.render('productsFromCart', {cart: result.response.payload, user: result.user})
     } else {
         res.status(result.statusCode).json({status: 'error', error: result.response.error})
     }

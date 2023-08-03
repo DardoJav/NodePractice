@@ -1,5 +1,10 @@
 <div>
-    Bienvenido {{ username }}
+    <h3>Bienvenido {{ user.first_name }}</h3>
+    {{#if user.email}}
+        <td>Email: {{ user.email }}</td><br>
+        <td>Age: {{ user.age }}</td><br>
+        <td>Rol: {{ user.role }}</td><br>
+    {{/if}}
 </div>
 <hr />
 <h2>Products</h2>
@@ -43,6 +48,8 @@
         <a href="{{nextLink}}">Siguiente</a>
     {{/if}}
 </div>
+<hr />
+<a href="/session/logout">Cerrar Sesión</a>
 
 <script>
     addProductToCart = (pid) => {
