@@ -1,6 +1,7 @@
 <div>
     <h3>Bienvenido {{ user.first_name }}</h3>
-    {{#if user.email}}
+    {{!-- {{#if (user.email) && (user.email != " ")}} --}}
+    {{#if (and user.email (notEqual user.email " "))}}
         <td>Email: {{ user.email }}</td><br>
         <td>Age: {{ user.age }}</td><br>
         <td>Rol: {{ user.role }}</td><br>

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import productModel from '../dao/models/product.model.js'
 import cartModel from '../dao/models/cart.model.js'
-import { auth } from '../utils.js'
+// import { auth } from '../utils.js'
 
 const router = Router()
 
@@ -29,7 +29,7 @@ export const getProductsFromCart = async (req, res) => {
 }
 
 //API para crear un carrito nuevo
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     try{
         const result = await cartModel.create({})
         return res.status(200).json({status: 'success', payload: result})
@@ -46,9 +46,9 @@ router.post('/', auth, async (req, res) => {
 // })
 
 //API para devolver el carrito segun su ID
-router.get('/:cid', auth, async (req, res) => {
+router.get('/:cid', async (req, res) => {
     const result = await getProductsFromCart(req, res)
-    result.user = req.session.user
+    result.user = req.user.user
     if(result.statusCode === 200) {
         res.render('productsFromCart', {cart: result.response.payload, user: result.user})
     } else {
@@ -57,9 +57,9 @@ router.get('/:cid', auth, async (req, res) => {
 })
 
 //API para devolver el carrito del usuario
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try{
-        const user = req.session.user
+        const user = req.user.user
         return res.status(200).json({status: 'success', payload: user})
     } catch (err){
         consolr.log(err)
@@ -68,7 +68,7 @@ router.get('/', auth, async (req, res) => {
 })
 
 //API para eliminar el carrito
-router.delete('/:cid', auth, async (req, res) => {
+router.delete('/:cid', async (req, res) => {
     try{
         const cid = req.params.cid
         const cartToUpdate = await cartModel.findById(cid)
@@ -85,7 +85,7 @@ router.delete('/:cid', auth, async (req, res) => {
 })
 
 //API para actualizar un carrito segun su ID
-router.put('/:cid', auth, async (req, res) => {
+router.put('/:cid', async (req, res) => {
     try{
         const cid = req.params.cid
         const cartToUpdate = await cartModel.findById(cid)
@@ -123,12 +123,11 @@ router.put('/:cid', auth, async (req, res) => {
 })
 
 //API para agregar un producto X al carrito X
-router.post('/:cid/product/:pid', auth, async (req, res) => {
+router.post('/:cid/product/:pid', async (req, res) => {
     try{
         const cid = req.params.cid
         const pid = req.params.pid
         const cartToUpdate = await cartModel.findById(cid)
-        console.log(cartToUpdate)
         if (cartToUpdate === null){
             return res.status(404).json({status: 'error', error: `cart with id=${cid} not found`})
         }
@@ -154,7 +153,7 @@ router.post('/:cid/product/:pid', auth, async (req, res) => {
 })
 
 //API para actualzar un producto X del carrito X
-router.put('/:cid/product/:pid', auth, async (req, res) => {
+router.put('/:cid/product/:pid', async (req, res) => {
     try{
         const cid = req.params.cid
         const pid = req.params.pid
@@ -193,7 +192,7 @@ router.put('/:cid/product/:pid', auth, async (req, res) => {
 })
 
 //API para eliminar un producto X del carrito X
-router.delete('/:cid/product/:pid', auth, async (req, res) => {
+router.delete('/:cid/product/:pid', async (req, res) => {
     try{
         const cid = req.params.cid
         const pid = req.params.pid

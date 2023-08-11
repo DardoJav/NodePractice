@@ -1,11 +1,14 @@
 import passport from "passport"
 import local from 'passport-local'
 import UserModel from '../dao/models/user.model.js'
-import { createHash, isValidPassword } from '../utils.js'
+import { createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import GitHubStrategy from 'passport-github2'
 import cartModel from "../dao/models/cart.model.js"
+import passport_jwt from "passport-jwt"
 
 const LocalStrategy = local.Strategy
+const JWTStrategy = passport_jwt.Strategy
+const ExtractJWT = passport_jwt.ExtractJwt
 
 const initializePassport = () => {
 
@@ -17,7 +20,6 @@ const initializePassport = () => {
         try {
             const user = await UserModel.findOne({ email: username })
             if (user) {
-                console.log('email already exists')
                 return done(null, false)
             }
             const cartForNewUser = await cartModel.create({})
@@ -49,27 +51,52 @@ const initializePassport = () => {
             }
 
             if (!isValidPassword(user, password)) return done(null, false)
+
+            const token = generateToken(user)
+            user.token = token
+
             return done(null, user)
         } catch(err) {
             return done('error al intentar el login: ' + err.message)
         }
     }))
 
+    passport.use('jwt', new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromExtractors([extractCookie]),
+        secretOrKey: process.env.JWT_PRIVATE_KEY
+    }, async(jwt_payload, done) => {
+        done(null, jwt_payload)
+    }))
+
     passport.use('github', new GitHubStrategy({
-        clientID: 'Iv1.8e1a57385813e385',
-        clientSecret: '4397d94bbb9d6c21d80c15bd5a607a58da02ce9f',
-        callbackURL: 'http://localhost:8080/session/githubcallback'
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CLIENT_BACKURL
     }, async(accessToken, refreshToken, profile, done) => {
-        // console.log(profile)
         try {
-            const user = await UserModel.findOne({ email: profile._json.email })
-            if (user) return done(null, user)
-            const newUser = await UserModel.create({
-                first_name: profile._json.name,
-                email: profile._json.email,
-                password: " "
-            })
-            return done(null, newUser)
+            const userFromDB = await UserModel.findOne({ email: profile._json.email || " "})
+            if (userFromDB) {
+                const user = userFromDB
+                const token = generateToken(user)
+                user.token = token
+                return done(null, user)
+            } else {
+                const cartForNewUser = await cartModel.create({})
+                const newUser = await UserModel.create({
+                    first_name: profile._json.name,
+                    email: profile._json.email || " ",
+                    password: " ", 
+                    last_name: " ", 
+                    age: " ", 
+                    cart: cartForNewUser._id, 
+                    role: 'user'
+                })
+                const user = newUser
+                const token = generateToken(user)
+                user.token = token
+                return done(null, user)
+            }
+            
         } catch(err) {
             return done(`Error to login with GitHub => ${err.message}`)
         }

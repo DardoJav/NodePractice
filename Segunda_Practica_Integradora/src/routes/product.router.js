@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { productModel } from '../dao/models/product.model.js'
-import { auth } from '../utils.js'
+// import { auth } from '../utils.js'
 
 
 const router = Router()
@@ -56,7 +56,7 @@ export const getProducts = async (req, res) => {
 }
 
 
-router.post('/',auth, async (req, res) => {
+router.post('/', async (req, res) => {
     const product = req.body
     try {
         const result = await productModel.create(product)
@@ -67,7 +67,7 @@ router.post('/',auth, async (req, res) => {
 })
 
 
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         let page = parseInt(req.query.page) || 1
         let limit = parseInt(req.query.limit) || 10
@@ -85,15 +85,14 @@ router.get('/', auth, async (req, res) => {
         result.nextLink = result.hasNextPage 
                             ? `/products/?page=${result.nextPage}&limit=${result.limit}`
                             : ''
-        result.user = req.session.user
-        console.log(result.user)
+        result.user = req.user.user
         res.render('products', result)
     } catch(err) {
         res.status(500).json({ status: 'error', error: err.message })
     }
 })
 
-router.get('/:pid', auth, async (req, res) => {
+router.get('/:pid', async (req, res) => {
     try{
         const pid = req.params.pid
         const product = await productModel.findById(pid)
@@ -105,7 +104,7 @@ router.get('/:pid', auth, async (req, res) => {
 })
 
 
-router.delete('/:pid', auth, async (req, res) => {
+router.delete('/:pid', async (req, res) => {
     const id = req.params.pid
     try {
         const result = await productModel.deleteOne({ _id: id})
@@ -117,7 +116,7 @@ router.delete('/:pid', auth, async (req, res) => {
 })
 
 
-router.put('/:pid', auth, async (req, res) => {
+router.put('/:pid', async (req, res) => {
     const product = req.body
     try {
         const result = await productModel.updateOne({ _id: req.params.pid }, { $set: product })

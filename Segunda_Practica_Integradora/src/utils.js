@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
 import {fileURLToPath} from 'url'
 import { dirname } from 'path'
-// import passport from 'passport'
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
 import UserModel from './dao/models/user.model.js'
 
 
@@ -18,39 +19,54 @@ export const isValidPassword = (user, password) => {
     return bcrypt.compareSync(password, user.password)
 }
 
-//falta terminar de definir la strategy en base a si es un login por github o por por local
-// una alternativa es usar el user y ver si esta en la base por ese email
-// export const passportCall = strategy => {
-//     return async(req, res, next) => {
-//         passport.authenticate(strategy, function(err, user, info) {
-//             if (err) return next(err)
-//             if (!user) return res.status(401).render('errors/base', { error: info.messages ? info.messages : info.toString() })
-            
-//             req.user = user
-//             next()
-//         })(req, res, next)
-//     }
-// }
+export const generateToken = user => {
+    const token = jwt.sign({ user }, process.env.JWT_PRIVATE_KEY, { expiresIn: '24h'})
+    return token 
+}
 
-export const auth = async (req, res, next) => {
-    try {
-        if(!req.session.user){
-            return res.status(401).render('errors/base', { error: 'Not Authorized' })
-        }
-        const user = await UserModel.findOne({ email: req.session.user.email })
-        if(!user){
-            return res.status(401).render('errors/base', { error: 'Not Authorized' })
-        }
-        return next()
-    }catch (err){
-        console.log(err)
-        return res.status(401).json({ status: 'fail', message: 'Auth error' })
+export const extractCookie = req => {
+    return (req && req.signedCookies) ? req.signedCookies[process.env.JWT_COOKIE_NAME] : null
+}
+
+//middleware para autorizacion por jwt
+export const passportCall = strategy => {
+    return async(req, res, next) => {
+        await passport.authenticate(strategy, function(err, user, info) {
+            if (err) return next(err)
+            if (!user) return res.status(401).render('errors/base', { error: info.messages ? info.messages : info.toString() })
+            req.user = user
+            next()
+        })(req, res, next)
     }
 }
 
-// export const auth = (req, res, next) => {
-//     if (req.session?.user && req.session.user.username === 'admin@coderhouse.com') {
+//middleware para autorizacion por sessiones
+// export const auth = async (req, res, next) => {
+//     try {
+//         if(!req.session.user){
+//             return res.status(401).render('errors/base', { error: 'Not Authorized' })
+//         }
+//         const user = await UserModel.findOne({ email: req.session.user.email })
+//         if(!user){
+//             return res.status(401).render('errors/base', { error: 'Not Authorized' })
+//         }
 //         return next()
+//     }catch (err){
+//         console.log(err)
+//         return res.status(401).json({ status: 'fail', message: 'Auth error' })
 //     }
-//     return res.status(401).json({ status: 'fail', message: 'Auth error' })
 // }
+
+//handle policies middleware para cuando haya que usar policies
+export const handlePolicies = policies => (req, res, next) => {
+    const user = req.user.user || null
+    console.log('handlePolicies: ', user)
+    if (policies.includes('ADMIN')) {
+        if (user.role !== 'admin') {
+            return res.status(403).render('errors/base', {
+                error: 'Need to be an ADMIN'
+            })
+        }
+    }
+    return next()
+}
