@@ -1,7 +1,7 @@
 {
-  "name": "desafio_estrategias_autenticacion",
+  "name": "desafio_reestructuracion",
   "version": "1.0.0",
-  "description": "Desafio estrategias de autenticacion",
+  "description": "Desafio Reestructuracion",
   "main": "src/app.js",
   "type": "module",
   "scripts": {

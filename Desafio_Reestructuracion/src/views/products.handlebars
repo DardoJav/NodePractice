@@ -54,7 +54,7 @@
 
 <script>
     addProductToCart = (pid) => {
-        fetch(`/carts`, {
+        fetch(`/api/carts`, {
             method: 'get'
         })
             .then(result => result.json())
@@ -63,7 +63,7 @@
                 return result.payload.cart
             })
             .then(cid =>
-                fetch(`/carts/${cid}/product/${pid}`,{
+                fetch(`/api/carts/${cid}/product/${pid}`,{
                     method: 'post'
                 })
             )

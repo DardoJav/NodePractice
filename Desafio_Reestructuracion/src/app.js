@@ -2,6 +2,7 @@ import "dotenv/config.js";
 import express from 'express'
 import productRouter from './routes/product.router.js'
 import cartRouter from './routes/cart.router.js'
+import viewRouter from './routes/view.router.js'
 import sessionRouter from './routes/session.router.js'
 import mongoose from 'mongoose'
 import handlebars from 'express-handlebars'
@@ -26,7 +27,7 @@ const hbs = handlebars.create({ //agrego esta validacion en handelbars para pode
     notEqual: function (a, b) {
       return a !== b;
     }
-    // pueden ir otro helpers aca
+    // pueden ir otros helpers aca
   }
 })
 app.engine('handlebars', hbs.engine)
@@ -54,11 +55,14 @@ app.use(passport.session())
 //falta agregar el views y cambiar products y carts a api/..
 //falta agregar el home.handlebars
 //falta agregar la pagina de cargar productos desde el public/index
-app.use('/products',  passportCall('jwt'), productRouter)
+
+app.use('/api/products',  passportCall('jwt'), productRouter)
 //ejemplo de /products usando de middleware un handlePolicies
 //app.use("/products", passportCall('jwt'), handlePolicies(['ADMIN']), productViewsRouter)
-app.use('/carts',  passportCall('jwt'), cartRouter)
+app.use('/api/carts',  passportCall('jwt'), cartRouter)
 app.use("/session", sessionRouter)
+app.use("/products", passportCall('jwt'), viewRouter)
+app.use("/carts", passportCall('jwt'), viewRouter)
 
 app.use("/", (_req, res) => res.send("HOME"))
 
