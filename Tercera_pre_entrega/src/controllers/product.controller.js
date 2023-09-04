@@ -78,6 +78,7 @@ export const getAllProductsController = async (req, res) => {
 export const getProductByIdController = async (req, res) => {
     try{
         const pid = req.params.pid
+        console.log(pid)
         // const product = await productModel.findById(pid)
         const product = await ProductService.getById(pid)
         return res.status(200).json({status: 'success', payload: product})

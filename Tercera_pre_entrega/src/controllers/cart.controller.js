@@ -40,7 +40,7 @@ export const createCartController = async (req, res) => {
 export const getProductFromCartController = async (req, res) => {
     try{
         // const result = await getProductsFromCart(req, res)
-        const result = await CartService.getProductsFromCart()
+        const result = await CartService.getProductsFromCart(req)
         result.user = req.user.user
         if(result.statusCode === 200) {
             res.status(result.statusCode).json({cart: result.response.payload, user: result.user})
@@ -205,15 +205,34 @@ export const deleteProductFromCartController = async (req, res) => {
         if (productToDelete === null){
             return res.status(404).json({status: 'error', error: `product with id=${cid} not found`})
         }
-        const productIndex = cartToUpdate.produts.findIndex(item => item.product == pid)
+        const productIndex = cartToUpdate.products.findIndex(item => item.product == pid)
         if (productIndex === -1){
             return res.status(400).json({status: 'error', error: `product with id=${cid} not found in cart with id=${cid}`})
         } else {
-            cartToUpdate.products = cartToUpdate.products.filter(item => item.product.toString() !== pid)
+            cartToUpdate.products = cartToUpdate.products.filter(item => item.product._id !== pid)
         }
         // const result = await cartModel.findByIdAndUpdate(cid, cartToUpdate, {returnDocument: 'after'})
         const result = await CartService.update(cid, cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
+    }catch (err){
+        console.log(err)
+        return res.status(500).json({status: 'error', error: err.message})
+    }
+}
+
+//NOTA:
+//asumi lo siguiente:
+//en caso de que haya algun producto que no tiene suficiente stock antes de generar el ticket de compra:
+// actualizo el cart en la bd con esos productos y devuelvo un 409 con dichos productos en un array de rta (no genero ningun ticket de compra)
+// caso contrario genero el ticket de compra en la bd y devuelvo un 200
+export const purchaseCartController = async (req, res) => {
+    try{
+        const result = await CartService.purchaseCart(req)
+        if(result.statusCode === 200) {
+            res.status(result.statusCode).json({status: 'success', payload: result.response.payload})
+        } else {
+            res.status(result.statusCode).json({status: 'error', error: result.response.error, products: result.response.products})
+        }
     }catch (err){
         console.log(err)
         return res.status(500).json({status: 'error', error: err.message})

@@ -23,7 +23,7 @@ export const viewProductsController = async (req, res) => {
 export const viewProductsFromCartController = async (req, res) => {
     try{
         // const result = await getProductsFromCart(req, res)
-        const result = await CartService.getProductsFromCart()
+        const result = await CartService.getProductsFromCart(req)
         result.user = req.user.user
         if(result.statusCode === 200) {
             res.render('productsFromCart', {cart: result.response.payload, user: result.user})

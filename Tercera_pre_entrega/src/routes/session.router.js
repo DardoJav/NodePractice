@@ -3,6 +3,7 @@ import { Router } from "express";
 // import { isValidPassword } from "../utils.js";
 import passport from "passport";
 import UserDTO from "../dto/user.dto.js";
+import { handlePolicies } from "../utils.js";
 
 const router = Router()
 
@@ -94,8 +95,7 @@ router.get('/logout', (req, res) => {
     res.clearCookie(process.env.JWT_COOKIE_NAME).redirect('/session/login')
 })
 
-router.get('/current', (req, res) => {
-    // console.log(req.user)
+router.get('/current', handlePolicies(['ADMIN']), (req, res) => {
     if(!req.user) return res.status(401).json({status: 'error', error:'no session detected'})
     res.status(200).json({status: 'success', payload: new UserDTO(req.user)})
 })

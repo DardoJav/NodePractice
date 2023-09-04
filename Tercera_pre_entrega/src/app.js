@@ -52,13 +52,10 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-//falta agregar el views y cambiar products y carts a api/..
 //falta agregar el home.handlebars
 //falta agregar la pagina de cargar productos desde el public/index
 
 app.use('/api/products',  passportCall('jwt'), productRouter)
-//ejemplo de /products usando de middleware un handlePolicies
-//app.use("/products", passportCall('jwt'), handlePolicies(['ADMIN']), productViewsRouter)
 app.use('/api/carts',  passportCall('jwt'), cartRouter)
 app.use("/session", sessionRouter)
 app.use("/products", passportCall('jwt'), viewRouter)

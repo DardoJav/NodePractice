@@ -4,20 +4,21 @@ import { createProductController,
     getAllProductsController, 
     getProductByIdController, 
     updateProductController } from '../controllers/product.controller.js'
+import { handlePolicies } from '../utils.js'
 // import { auth } from '../utils.js'
 
 const router = Router()
 
 
-router.post('/', createProductController)
+router.post('/', handlePolicies(['ADMIN']),createProductController)
 
 router.get('/', getAllProductsController)
 
 router.get('/:pid', getProductByIdController)
 
-router.delete('/:pid', deleteProductController)
+router.delete('/:pid', handlePolicies(['ADMIN']), deleteProductController)
 
-router.put('/:pid', updateProductController)
+router.put('/:pid', handlePolicies(['ADMIN']), updateProductController)
 
 
 export default router
