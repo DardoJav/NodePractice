@@ -43,9 +43,9 @@ export const getProductFromCartController = async (req, res) => {
         const result = await CartService.getProductsFromCart(req)
         result.user = req.user.user
         if(result.statusCode === 200) {
-            res.status(result.statusCode).json({cart: result.response.payload, user: result.user})
+            return res.status(result.statusCode).json({cart: result.response.payload, user: result.user})
         } else {
-            res.status(result.statusCode).json({status: 'error', error: result.response.error})
+            return res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch (err) {
         console.log(err)
@@ -229,9 +229,9 @@ export const purchaseCartController = async (req, res) => {
     try{
         const result = await CartService.purchaseCart(req)
         if(result.statusCode === 200) {
-            res.status(result.statusCode).json({status: 'success', payload: result.response.payload})
+            return res.status(result.statusCode).json({status: 'success', payload: result.response.payload})
         } else {
-            res.status(result.statusCode).json({status: 'error', error: result.response.error, products: result.response.products})
+            return res.status(result.statusCode).json({status: 'error', error: result.response.error, products: result.response.products})
         }
     }catch (err){
         console.log(err)

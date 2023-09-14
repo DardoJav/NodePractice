@@ -12,6 +12,7 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js"
 import __dirname, {passportCall} from "./utils.js"
 import cookieParser from 'cookie-parser'
+import errorHandler from './middleware/error.middleware.js'
 
 const app = express()
 
@@ -60,8 +61,9 @@ app.use('/api/carts',  passportCall('jwt'), cartRouter)
 app.use("/session", sessionRouter)
 app.use("/products", passportCall('jwt'), viewRouter)
 app.use("/carts", passportCall('jwt'), viewRouter)
+app.use(errorHandler)
 
-app.use("/", (_req, res) => res.redirect("/session/login"))
+app.use('/', (_req, res) => res.redirect("/session/login"))
 
 try {
     await mongoose.connect(process.env.MONGO_DB_URI, 

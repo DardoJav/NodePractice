@@ -1,4 +1,7 @@
 // import productModel from "../dao/models/product.model.js"
+import CustomError from "../services/errors/custom_error.js"
+import EErros from "../services/errors/enums.js"
+import { generateProductErrorInfo } from "../services/errors/info.js"
 import { ProductService } from "../services/index.js"
 
 
@@ -51,14 +54,22 @@ import { ProductService } from "../services/index.js"
 //     }
 // }
 
-export const createProductController = async (req, res) => {
+export const createProductController = async (req, res, next) => {
     const product = req.body
     try {
-        // const result = await productModel.create(product)
+        if (!product.title || !product.description || !product.stock || !product.price || !product.category || !product.code) {
+            CustomError.createError({
+                name: 'product creation error',
+                cause: generateProductErrorInfo(product),
+                message: 'Error trying to create a product',
+                code: EErros.INVALID_TYPES_ERROR
+            })
+        }
         const result = await ProductService.create(product)
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
-        res.status(500).json({ status: 'error', error: err.message })
+        if(err.code == 1 || err.code == 2 || err.code == 3) next(err)
+        res.status(500).json({ status: 'error', error_message: err.message })
     }
 }
 

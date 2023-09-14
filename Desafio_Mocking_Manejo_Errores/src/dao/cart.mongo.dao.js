@@ -1,3 +1,4 @@
+import { sendEmail } from '../utils.js'
 import cartModel from './models/cart.model.js'
 import ticketModel from './models/ticket.model.js'
 
@@ -72,10 +73,19 @@ export default class CartDAO {
                 amount: totalAmount,
                 purchaser: req.user.user.email
             }
+            const sendEmailResult = await sendEmail(products,newTicket)
             const ticket = await ticketModel.create(newTicket)
-            return {
-                statusCode: 200,
-                response: {status: 'success', payload: ticket}
+
+            if(sendEmailResult.statusCode === 200) {
+                return {
+                    statusCode: 200,
+                    response: {status: 'success', payload: ticket}
+                }
+            } else {
+                return {
+                    statusCode: 500,
+                    response: {status: 'error', error: sendEmailResult.error}
+                }
             }
         } catch (err) {
             return {

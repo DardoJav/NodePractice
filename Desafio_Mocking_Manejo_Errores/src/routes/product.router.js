@@ -4,13 +4,16 @@ import { createProductController,
     getAllProductsController, 
     getProductByIdController, 
     updateProductController } from '../controllers/product.controller.js'
-import { handlePolicies } from '../utils.js'
+import { handlePolicies, generateProducts } from '../utils.js'
 // import { auth } from '../utils.js'
 
 const router = Router()
 
 
-router.post('/', handlePolicies(['ADMIN']),createProductController)
+router.post('/', //handlePolicies(['ADMIN']),
+createProductController)
+
+router.post("/mockingproducts", handlePolicies(['ADMIN']), generateProducts); //creo que lo mejor es que se generen los productos y se los muestren en pantalla, es decir, despues del login
 
 router.get('/', getAllProductsController)
 
