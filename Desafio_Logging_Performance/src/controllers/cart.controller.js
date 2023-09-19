@@ -32,7 +32,7 @@ export const createCartController = async (req, res) => {
         const result = await CartService.create()
         return res.status(200).json({status: 'success', payload: result})
     } catch (err){
-        console.log(err)
+        logger.error(`error on createCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -48,7 +48,7 @@ export const getProductFromCartController = async (req, res) => {
             return res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch (err) {
-        console.log(err)
+        logger.error(`error on getProductFromCartController: ${err}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -58,7 +58,7 @@ export const getProductFromUserController = async (req, res) => {
         const user = req.user.user
         return res.status(200).json({status: 'success', payload: user})
     } catch (err){
-        consolr.log(err)
+        logger.error(`error on getProductFromUserController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -87,7 +87,7 @@ export const addProductToCartController = async (req, res) => {
         const result = await CartService.update(cid,cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
     }catch (err){
-        console.log(err)
+        logger.error(`error on addProductToCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -105,7 +105,7 @@ export const clearCartController = async (req, res) => {
         const result = await CartService.update(cid, cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
     }catch (err){
-        console.log(err)
+        logger.error(`error on clearCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -145,7 +145,7 @@ export const updateCartController = async (req, res) => {
         const result = await CartService.update(cid, cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
     }catch (err){
-        console.log(err)
+        logger.error(`error on updateCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -186,7 +186,7 @@ export const updateProductQtyFromCartController = async (req, res) => {
         const result = await CartService.update(cid, cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
     }catch (err){
-        console.log(err)
+        logger.error(`error on updateProductQtyFromCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -215,7 +215,7 @@ export const deleteProductFromCartController = async (req, res) => {
         const result = await CartService.update(cid, cartToUpdate)
         return res.status(200).json({status: 'success', payload: result})
     }catch (err){
-        console.log(err)
+        logger.error(`error on deleteProductFromCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
@@ -234,7 +234,7 @@ export const purchaseCartController = async (req, res) => {
             return res.status(result.statusCode).json({status: 'error', error: result.response.error, products: result.response.products})
         }
     }catch (err){
-        console.log(err)
+        logger.error(`error on purchaseCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }

@@ -12,6 +12,7 @@ export const viewProductsController = async (req, res) => {
             res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch(err) {
+        logger.error(`error on viewProductsController: ${err.message}`)
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
@@ -31,7 +32,7 @@ export const viewProductsFromCartController = async (req, res) => {
             res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch (err) {
-        console.log(err)
+        logger.error(`error on viewProductsFromCartController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }

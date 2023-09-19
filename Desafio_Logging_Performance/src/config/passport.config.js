@@ -37,6 +37,7 @@ const initializePassport = () => {
             const result = await UserModel.create(newUser)
             return done(null, result)
         } catch(err) {
+            logger.error(`error on register passport: ${err.message}`)
             return done('error al obtener el user: '+ err.message)
         }
     }))
@@ -57,6 +58,7 @@ const initializePassport = () => {
 
             return done(null, user)
         } catch(err) {
+            logger.error(`error on login passport: ${err.message}`)
             return done('error al intentar el login: ' + err.message)
         }
     }))
@@ -99,6 +101,7 @@ const initializePassport = () => {
             }
             
         } catch(err) {
+            logger.error(`error on github login passport: ${err.message}`)
             return done(`Error to login with GitHub => ${err.message}`)
         }
     }))

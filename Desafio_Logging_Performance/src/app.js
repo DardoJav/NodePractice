@@ -13,6 +13,7 @@ import initializePassport from "./config/passport.config.js"
 import __dirname, {passportCall} from "./utils.js"
 import cookieParser from 'cookie-parser'
 import errorHandler from './middleware/error.middleware.js'
+import logger from "./logger.js";
 
 const app = express()
 
@@ -63,7 +64,19 @@ app.use("/products", passportCall('jwt'), viewRouter)
 app.use("/carts", passportCall('jwt'), viewRouter)
 app.use(errorHandler)
 
+app.post('/loggerTest', (req, res) => {
+  logger.debug('Logging a debug log type')
+  logger.http('Logging a http log type')
+  logger.info('Logging an info log type')
+  logger.warning('Logging a warning log type')
+  logger.error('Logging an error log type')
+  logger.fatal('Logging a fatal log type')
+  res.json({ status: 'success' })
+})
+
 app.use('/', (_req, res) => res.redirect("/session/login"))
+
+
 
 try {
     await mongoose.connect(process.env.MONGO_DB_URI, 
@@ -72,8 +85,8 @@ try {
       })
     console.log('dbconnected!')
 
-    const httpServer = app.listen(8080, () => console.log('Server running on PORT: 8080'))
-    httpServer.on("error", (e) => console.log("ERROR: " + e))
+    const httpServer = app.listen(8080, () => logger.info('Server running on PORT: 8080'))
+    httpServer.on("error", (e) => logger.fatal("ERROR: " + e))
     
 } catch(err) {
     console.log(err.message)

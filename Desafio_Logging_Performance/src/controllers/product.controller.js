@@ -68,6 +68,7 @@ export const createProductController = async (req, res, next) => {
         const result = await ProductService.create(product)
         res.status(200).json({ status: 'success', payload: result })
     } catch(err) {
+        logger.error(`error on createProductController: ${err.message}`)
         if(err.code == 1 || err.code == 2 || err.code == 3) next(err)
         res.status(500).json({ status: 'error', error_message: err.message })
     }
@@ -82,6 +83,7 @@ export const getAllProductsController = async (req, res) => {
             res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch(err) {
+        logger.error(`error on getAllProductsController: ${err.message}`)
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
@@ -94,7 +96,7 @@ export const getProductByIdController = async (req, res) => {
         const product = await ProductService.getById(pid)
         return res.status(200).json({status: 'success', payload: product})
     } catch(err) {
-        console.log(err)
+        logger.error(`error on getProductByIdController: ${err.message}`)
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
@@ -106,6 +108,7 @@ export const updateProductController = async (req, res) => {
         const result = await ProductService.update(req.params.pid, product)
         res.status(200).json({ status: 'success', payload: 'Product updated successfully' })
     } catch(err) {
+        logger.error(`error on updateProductController: ${err.message}`)
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
@@ -117,6 +120,7 @@ export const deleteProductController = async (req, res) => {
         const result = await ProductService.delete(id)
         res.status(200).json({ status: 'success', payload: 'Product deleted successfully' })
     } catch(err) {
+        logger.error(`error on deleteProductController: ${err.message}`)
         res.status(500).json({ status: 'error', error: err.message })
     }
 }
