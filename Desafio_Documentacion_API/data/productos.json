@@ -1,0 +1,123 @@
+[
+	{
+		"id": 1,
+		"title": "producto prueba 2",
+		"description": "Este es un producto prueba 2 actualizado",
+		"price": 200,
+		"thumbnail": "Sin imagen",
+		"code": "abc1474",
+		"stock": 25,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 2,
+		"title": "producto prueba 2",
+		"description": "Este es un producto prueba 2 actualizado",
+		"price": 200,
+		"thumbnail": "Sin imagen",
+		"code": "abc14745",
+		"stock": 25,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 3,
+		"title": "producto prueba 3",
+		"description": "Este es un producto prueba 3",
+		"price": 400,
+		"thumbnail": "Sin imagen",
+		"code": "dgf149",
+		"stock": 89,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 4,
+		"title": "producto prueba 4",
+		"description": "Este es un producto prueba 4",
+		"price": 687,
+		"thumbnail": "Sin imagen",
+		"code": "zcx753",
+		"stock": 90,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 5,
+		"title": "producto prueba 5",
+		"description": "Este es un producto prueba 5",
+		"price": 355,
+		"thumbnail": "Sin imagen",
+		"code": "qew145",
+		"stock": 70,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 6,
+		"title": "producto prueba 6",
+		"description": "Este es un producto prueba 6",
+		"price": 150,
+		"thumbnail": "Sin imagen",
+		"code": "cdw809",
+		"stock": 45,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 6,
+		"title": "producto prueba 7",
+		"description": "Este es un producto prueba 7",
+		"price": 230,
+		"thumbnail": "Sin imagen",
+		"code": "efv508",
+		"stock": 20,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 8,
+		"title": "producto prueba 8",
+		"description": "Este es un producto prueba 8",
+		"price": 400,
+		"thumbnail": "Sin imagen",
+		"code": "gbr163",
+		"stock": 60,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 9,
+		"title": "producto prueba 9",
+		"description": "Este es un producto prueba 9",
+		"price": 530,
+		"thumbnail": "Sin imagen",
+		"code": "hnt560",
+		"stock": 70,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 10,
+		"title": "producto prueba 10",
+		"description": "Este es un producto prueba 10",
+		"price": 790,
+		"thumbnail": "Sin imagen",
+		"code": "mjy539",
+		"stock": 85,
+		"status": true,
+		"category": "algo"
+	},
+	{
+		"id": 11,
+		"title": "producto prueba 11",
+		"description": "Este es un producto 11",
+		"code": "abc12312",
+		"price": 200,
+		"status": true,
+		"stock": 25,
+		"category": "algo",
+		"thumbnail": "Sin imagen"
+	}
+]
