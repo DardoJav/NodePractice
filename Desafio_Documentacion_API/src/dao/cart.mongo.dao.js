@@ -1,3 +1,4 @@
+import logger from '../logger.js'
 import { sendEmail } from '../utils.js'
 import cartModel from './models/cart.model.js'
 import ticketModel from './models/ticket.model.js'
@@ -20,6 +21,7 @@ export default class CartDAO {
                 response: {status: 'success', payload: result}
             }
         } catch (err) {
+            logger.error(`error on cartDao getProductsFromCart: ${err.message}`)
             return {
                 statusCode: 500,
                 response: {status: 'error', error: err.message}
@@ -88,6 +90,7 @@ export default class CartDAO {
                 }
             }
         } catch (err) {
+            logger.error(`error on cartDao purchaseCart: ${err.message}`)
             return {
                 statusCode: 500,
                 response: {status: 'error', error: err.message}

@@ -14,6 +14,22 @@ import __dirname, {passportCall} from "./utils.js"
 import cookieParser from 'cookie-parser'
 import errorHandler from './middleware/error.middleware.js'
 import logger from "./logger.js";
+import swaggerUiExpress from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
+
+export const swaggerOptions = {
+    definition: {
+        openapi: '3.1.0',
+        info: {
+            title: 'Ecommerce para Proyecto Final de Coderhouse',
+            version: '1.0.0',
+        }
+    },
+    apis: [
+        `./docs/**/*.yaml`,
+    ],
+};
+const specs = swaggerJsdoc(swaggerOptions);
 
 const app = express()
 
@@ -74,9 +90,9 @@ app.post('/loggerTest', (req, res) => {
   res.json({ status: 'success' })
 })
 
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
 app.use('/', (_req, res) => res.redirect("/session/login"))
-
-
 
 try {
     await mongoose.connect(process.env.MONGO_DB_URI, 

@@ -3,6 +3,7 @@ import CustomError from "../services/errors/custom_error.js"
 import EErros from "../services/errors/enums.js"
 import { generateProductErrorInfo } from "../services/errors/info.js"
 import { ProductService } from "../services/index.js"
+import logger from "../logger.js";
 
 
 // export const getProducts = async (req, res) => {

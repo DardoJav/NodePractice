@@ -3,8 +3,8 @@ import { addProductToCartController,
     clearCartController, 
     createCartController, 
     deleteProductFromCartController,
-    getProductFromCartController, 
-    getProductFromUserController, 
+    getProductsFromCartController, 
+    getCartFromUserController, 
     purchaseCartController, 
     updateCartController, 
     updateProductQtyFromCartController } from '../controllers/cart.controller.js'
@@ -16,11 +16,11 @@ const router = Router()
 //API para crear un carrito nuevo
 router.post('/', createCartController)
 
-//API para devolver el carrito segun su ID
-router.get('/:cid', getProductFromCartController)
+//API para devolver los productos segun el ID del carrito
+router.get('/:cid', getProductsFromCartController)
 
 //API para devolver el carrito del usuario
-router.get('/', getProductFromUserController)
+router.get('/', getCartFromUserController)
 
 //API para eliminar el carrito
 router.delete('/:cid', clearCartController)

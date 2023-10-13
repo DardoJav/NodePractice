@@ -1,6 +1,7 @@
 // import cartModel from "../dao/models/cart.model.js"
 // import productModel from "../dao/models/product.model.js"
 import { CartService, ProductService } from "../services/index.js"
+import logger from "../logger.js";
 
 
 //Lee todos los productos del carrito
@@ -37,7 +38,7 @@ export const createCartController = async (req, res) => {
     }
 }
 
-export const getProductFromCartController = async (req, res) => {
+export const getProductsFromCartController = async (req, res) => {
     try{
         // const result = await getProductsFromCart(req, res)
         const result = await CartService.getProductsFromCart(req)
@@ -48,17 +49,17 @@ export const getProductFromCartController = async (req, res) => {
             return res.status(result.statusCode).json({status: 'error', error: result.response.error})
         }
     } catch (err) {
-        logger.error(`error on getProductFromCartController: ${err}`)
+        logger.error(`error on getProductsFromCartController: ${err}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }
 
-export const getProductFromUserController = async (req, res) => {
+export const getCartFromUserController = async (req, res) => {
     try{
         const user = req.user.user
         return res.status(200).json({status: 'success', payload: user})
     } catch (err){
-        logger.error(`error on getProductFromUserController: ${err.message}`)
+        logger.error(`error on getCartFromUserController: ${err.message}`)
         return res.status(500).json({status: 'error', error: err.message})
     }
 }

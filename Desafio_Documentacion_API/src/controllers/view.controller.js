@@ -1,6 +1,7 @@
 // import productModel from "../dao/models/product.model.js"
 // import { getProductsFromCart } from "./cart.controller.js"
 import { CartService, ProductService } from "../services/index.js"
+import logger from "../logger.js";
 
 
 export const viewProductsController = async (req, res) => {

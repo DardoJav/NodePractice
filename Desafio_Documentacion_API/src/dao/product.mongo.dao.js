@@ -1,3 +1,4 @@
+import logger from '../logger.js'
 import productModel from './models/product.model.js'
 
 export default class ProductDAO {
@@ -37,6 +38,7 @@ export default class ProductDAO {
                 }
             }
         } catch(err) {
+            logger.error(`error on productDao getAllPaginate: ${err.message}`)
             return {
                 statusCode: 500,
                 response: { status: 'error', error: err.message}
@@ -56,6 +58,7 @@ export default class ProductDAO {
                 }
             }
         } catch(err) {
+            logger.error(`error on productDao update: ${err.message}`)
             return {
                 statusCode: 500,
                 response: { status: 'error', error: err.message}
@@ -74,6 +77,7 @@ export default class ProductDAO {
                 }
             }
         } catch(err) {
+            logger.error(`error on productDao delete: ${err.message}`)
             return {
                 statusCode: 500,
                 response: { status: 'error', error: err.message}
