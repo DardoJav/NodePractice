@@ -34,7 +34,7 @@ export default class ProductDAO {
                     hasNextPage: result.hasNextPage,
                     prevLink: result.hasPrevPage? result.prevLink: null,
                     nextLink: result.hasNextPage? result.nextLink: null,
-                    user: req.user.user
+                    user: req.user
                 }
             }
         } catch(err) {

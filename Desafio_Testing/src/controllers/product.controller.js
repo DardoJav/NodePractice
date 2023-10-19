@@ -77,7 +77,7 @@ export const createProductController = async (req, res, next) => {
 
 export const getAllProductsController = async (req, res) => {
     try {
-        const result = await ProductService.getAllPaginate()
+        const result = await ProductService.getAllPaginate(req)
         if(result.statusCode === 200) {
             res.status(result.statusCode).json({products: result.response.payload, user: result.response.user})
         } else {
