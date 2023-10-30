@@ -1,0 +1,268 @@
+paths:
+  /carts:
+    get:
+      tags: 
+        - Carts
+      summary: Get cart from user session
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    post:
+      tags: 
+        - Carts
+      summary: Create a new cart
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        format: ObjectId
+                        description: ID of the product to add to the cart
+                      quantity:
+                        type: number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+  /carts/{cartId}:
+    get:
+      tags: 
+        - Carts
+      summary: Get all products from cart by ID
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cart'
+    put:
+      tags: 
+        - Carts
+      summary: Update a cart by ID
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product:
+                        type: string
+                        format: ObjectId
+                        description: ID of the product to add to the cart
+                      quantity:
+                        type: number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: 
+        - Carts
+      summary: Clear a cart by ID
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    post:
+      tags: 
+        - Carts
+      summary: Create a purchase from cart by ID
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart to purchase
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+
+  /carts/{cartId}/product/{productId}:
+    post:
+      tags: 
+        - Carts
+      summary: Add a product to cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID of the product to add
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    put:
+      tags: 
+        - Carts
+      summary: Update a product quantity from cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID of the product to update quantity
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  required: true
+              required:
+                - quantity
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+    delete:
+      tags: 
+        - Carts
+      summary: Delete a product from the cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          description: ID of the product to delete
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/Product'
+              quantity:
+                type: number
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+        amount:
+          type: number
+        purchase_datetime:
+          type: date
+        purchaser:
+          type: string
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        age:
+          type: number
+        cart:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
